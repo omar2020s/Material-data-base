@@ -101,7 +101,17 @@ HTML = r'''
         <div class="warn">كل الحسابات تتم مباشرة داخل المتصفح، والتقرير جاهز للطباعة.</div>
       </section>
     </div>
-    <section class="card" id="report" style="margin-top:20px"><div class="card-head"><h2>Calculation Report</h2><span class="hint">Printable professional report table.</span></div><div class="toolbar no-print"><input id="tableSearch" placeholder="Search inside report..." oninput="filterTable()"><button class="ghost" onclick="exportCSV()">⬇️ Export CSV</button></div><div class="table-wrap"><table id="reportTable"><thead><tr><th>Material</th><th>Consumption</th><th>Price</th><th>Qty</th><th>Cost</th><th>Data Sheet</th><th class="no-print">Action</th></tr></thead><tbody><tr class="empty-row"><td colspan="7" class="empty">No materials added yet. Choose a material and click Add.</td></tr></tbody></table></div><div class="total"><span>Total Cost</span><strong id="totalCost">0.00</strong></div></section>
+    
+<div class="print-header" style="display:none">
+<div class="print-title">MATERIAL CALCULATION REPORT</div>
+<div class="print-subtitle">Material Database Pro</div>
+<div class="report-summary">
+<div class="summary-box"><h4>Date</h4><span id="printDate"></span></div>
+<div class="summary-box"><h4>Area</h4><span id="printArea">0</span></div>
+<div class="summary-box"><h4>Total Cost</h4><span id="printTotal">0</span></div>
+</div>
+</div>
+<section class="card" id="report" style="margin-top:20px"><div class="card-head"><h2>Calculation Report</h2><span class="hint">Printable professional report table.</span></div><div class="toolbar no-print"><input id="tableSearch" placeholder="Search inside report..." oninput="filterTable()"><button class="ghost" onclick="exportCSV()">⬇️ Export CSV</button></div><div class="table-wrap"><table id="reportTable"><thead><tr><th>Material</th><th>Consumption</th><th>Price</th><th>Qty</th><th>Cost</th><th>Data Sheet</th><th class="no-print">Action</th></tr></thead><tbody><tr class="empty-row"><td colspan="7" class="empty">No materials added yet. Choose a material and click Add.</td></tr></tbody></table></div><div class="total"><span>Total Cost</span><strong id="totalCost">0.00</strong></div></section>
   </main>
 </div>
 <script>
@@ -114,7 +124,10 @@ function openDataSheet(){const link=datasheet.value.trim();if(!link){alert('No D
 function cleanEmpty(){document.querySelector('.empty-row')?.remove();}
 function addToTable(){const select=calcMaterial;const op=select.options[select.selectedIndex];if(!op.value){alert('Select material first');return;}cleanEmpty();const tbody=document.querySelector('#reportTable tbody');for(const row of tbody.rows){if(row.dataset.material===op.value){alert('Material already added');return;}}const row=tbody.insertRow();row.dataset.material=op.value;row.dataset.rate=op.dataset.rate;row.dataset.price=op.dataset.price;row.dataset.datasheet=op.dataset.datasheet||'';row.innerHTML=`<td>${esc(op.value)}</td><td></td><td></td><td></td><td></td><td>${op.dataset.datasheet?`<a href="${esc(op.dataset.datasheet)}" target="_blank">Open PDF</a>`:''}</td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove(); calculate(); restoreEmpty();">Remove</button></td>`;}
 function restoreEmpty(){const tbody=document.querySelector('#reportTable tbody');if(!tbody.rows.length){tbody.innerHTML='<tr class="empty-row"><td colspan="7" class="empty">No materials added yet. Choose a material and click Add.</td></tr>';}}
-function calculate(){const area=parseFloat(document.getElementById('area').value);if(isNaN(area)||area<=0){alert('Enter valid area');return;}let total=0;const tbody=document.querySelector('#reportTable tbody');for(const row of tbody.rows){if(row.classList.contains('empty-row'))continue;const rate=parseFloat(row.dataset.rate);const price=parseFloat(row.dataset.price);const qty=area*rate;const cost=qty*price;total+=cost;row.cells[1].textContent=rate+' kg/m²';row.cells[2].textContent=price.toFixed(2);row.cells[3].textContent=qty.toFixed(2)+' kg';row.cells[4].textContent=cost.toFixed(2);}totalCost.textContent=total.toFixed(2);}
+function calculate(){const area=parseFloat(document.getElementById('area').value);if(isNaN(area)||area<=0){alert('Enter valid area');return;}let total=0;const tbody=document.querySelector('#reportTable tbody');for(const row of tbody.rows){if(row.classList.contains('empty-row'))continue;const rate=parseFloat(row.dataset.rate);const price=parseFloat(row.dataset.price);const qty=area*rate;const cost=qty*price;total+=cost;row.cells[1].textContent=rate+' kg/m²';row.cells[2].textContent=price.toFixed(2);row.cells[3].textContent=qty.toFixed(2)+' kg';row.cells[4].textContent=cost.toFixed(2);}totalCost.textContent=total.toFixed(2);
+document.getElementById('printDate').innerText=new Date().toLocaleDateString();
+document.getElementById('printArea').innerText=area.toFixed(2)+' m²';
+document.getElementById('printTotal').innerText=total.toFixed(2);}
 function clearTable(){document.querySelector('#reportTable tbody').innerHTML='<tr class="empty-row"><td colspan="7" class="empty">No materials added yet. Choose a material and click Add.</td></tr>';totalCost.textContent='0.00';}
 function filterTable(){const q=tableSearch.value.toLowerCase();document.querySelectorAll('#reportTable tbody tr').forEach(r=>{if(r.classList.contains('empty-row'))return;r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';});}
 function exportCSV(){let rows=[['Material','Consumption','Price','Qty','Cost','Data Sheet']];document.querySelectorAll('#reportTable tbody tr').forEach(r=>{if(r.classList.contains('empty-row'))return;rows.push([r.cells[0].innerText,r.cells[1].innerText,r.cells[2].innerText,r.cells[3].innerText,r.cells[4].innerText,r.dataset.datasheet||'']);});const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='material-report.csv';a.click();}
