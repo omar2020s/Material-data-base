@@ -1,0 +1,12 @@
+{
+    "Sika Repair Mortar": {
+        "rate": 2.0,
+        "price": 15.0,
+        "datasheet": "https://example.com/sika-datasheet.pdf"
+    },
+    "Epoxy Coating": {
+        "rate": 0.35,
+        "price": 45.0,
+        "datasheet": "https://example.com/epoxy-datasheet.pdf"
+    }
+}
