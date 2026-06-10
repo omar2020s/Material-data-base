@@ -1,12 +1,32 @@
 {
-    "Sika Repair Mortar": {
-        "rate": 2.0,
-        "price": 15.0,
-        "datasheet": "https://example.com/sika-datasheet.pdf"
-    },
-    "Epoxy Coating": {
+    "Curing Sika  (Sika Antisol WB)": {
         "rate": 0.35,
-        "price": 45.0,
-        "datasheet": "https://example.com/epoxy-datasheet.pdf"
+        "price": 20.0,
+        "datasheet": "G:\\My Drive\\Materials\\Curing\\sika_antisol_wb (Curing).pdf"
+    },
+    "Curing Fosroc (CONCURE WB309)": {
+        "rate": 0.35,
+        "price": 20.0,
+        "datasheet": "G:\\My Drive\\Materials\\Curing\\CONCURE WB309 (Curing).pdf"
+    },
+    "Bonding Sika(Sika Latex)": {
+        "rate": 0.25,
+        "price": 20.0,
+        "datasheet": "G:\\My Drive\\Materials\\Bonding\\Sika Latex\u00ae (Bonding).pdf"
+    },
+    "Bonding Sika(SikaBond\u00ae DV)": {
+        "rate": 0.25,
+        "price": 20.0,
+        "datasheet": "G:\\My Drive\\Materials\\Bonding\\sikabond_dv (Bonding).pdf"
+    },
+    "Bonding Fosroc (SBR)": {
+        "rate": 0.25,
+        "price": 20.0,
+        "datasheet": "G:\\My Drive\\Materials\\Bonding\\sikabond_dv (Bonding).pdf"
+    },
+    "Repair Fosroc (": {
+        "rate": 19.0,
+        "price": 20.0,
+        "datasheet": "G:\\My Drive\\Materials\\Repairs\\Vertical & Horozntal Repair\\RENDEROC HSXtra.pdf"
     }
 }
