@@ -1,0 +1,18 @@
+# Repair Material Calculator Pro - Flask + PostgreSQL
+
+## Render Settings
+Build Command:
+```bash
+pip install -r requirements.txt
+```
+Start Command:
+```bash
+gunicorn app:app
+```
+Environment Variables:
+```text
+DATABASE_URL=Render Internal Database URL
+SECRET_KEY=any strong secret key
+```
+
+Important: this project uses `.python-version` with Python 3.11.9. Do not add `runtime.txt`.
