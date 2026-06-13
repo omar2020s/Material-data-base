@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="report-card">
+    <div class="report-head">
+        <div>
+            <h2>Repair Material Calculation Report</h2>
+            <p>Professional material quantity and cost report</p>
+        </div>
+        <button onclick="window.print()" class="btn primary print-btn">Print / Save PDF</button>
+    </div>
+    <div class="report-info">
+        <div><span>Area</span><strong>{{ result.area }} m²</strong></div>
+        <div><span>Date</span><strong>{{ result.date }}</strong></div>
+        <div><span>Total Cost</span><strong>{{ '%.2f'|format(result.total) }}</strong></div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>#</th><th>Material</th><th>Type</th><th>Consumption</th><th>Price</th><th>Qty</th><th>Cost</th><th>Notes</th><th>Data Sheet</th></tr>
+            </thead>
+            <tbody>
+                {% for r in result.rows %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ r.name }}</td>
+                    <td>{{ r.material_type }}</td>
+                    <td>{{ r.consumption }} kg/m²</td>
+                    <td>{{ '%.2f'|format(r.price) }}</td>
+                    <td>{{ '%.2f'|format(r.qty) }} kg</td>
+                    <td>{{ '%.2f'|format(r.cost) }}</td>
+                    <td>{{ r.notes or '-' }}</td>
+                    <td>{% if r.datasheet %}<a href="{{ r.datasheet }}" target="_blank">Open</a>{% else %}-{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="grand-total">TOTAL COST = {{ '%.2f'|format(result.total) }}</div>
+    <div class="signatures">
+        <div>Prepared By</div>
+        <div>Checked By</div>
+        <div>Approved By</div>
+    </div>
+</section>
+{% endblock %}
